@@ -1,0 +1,18 @@
+# Logs
+*.log
+ScreenshotCleanup.log
+
+# OS artifacts
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE / editor artifacts
+.vscode/
+.idea/
+*.suo
+
+# Temp / backup files
+*.tmp
+*.bak
+*.orig
