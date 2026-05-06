@@ -6,6 +6,21 @@
 
 Automatically deletes screenshots and screen recordings older than a configurable number of days from the default Windows user folders.
 
+---
+
+**`ScreenshotCleanup.log` after a scheduled run:**
+
+```
+2026-05-06 12:00:03 - Starting cleanup process. Retention period: 7 days
+2026-05-06 12:00:03 - Deleted: C:\Users\[USER]\Pictures\Screenshots\Screenshot 2026-04-27 143201.png
+2026-05-06 12:00:03 - Deleted: C:\Users\[USER]\Pictures\Screenshots\Screenshot 2026-04-28 090512.png
+2026-05-06 12:00:03 - Deleted: C:\Users\[USER]\Videos\Screen Recordings\Recording 2026-04-25 162340.mp4
+2026-05-06 12:00:04 - Cleanup completed. Deleted: 2 screenshots and 1 screen recordings older than 7 days.
+```
+*(representative)*
+
+---
+
 ## ⚙️ Requirements
 
 - Windows
@@ -39,7 +54,7 @@ $action   = New-ScheduledTaskAction -Execute "powershell.exe" `
                 -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`" -DaysToKeep 7"
 $trigger  = New-ScheduledTaskTrigger -Daily -At "12:00PM"
 $trigger.RandomDelay = "PT30M"
-$settings = New-ScheduledTaskSettingsSet -Hidden
+$settings = New-ScheduledTaskSettingsSet -Hidden -StartWhenAvailable
 Register-ScheduledTask -TaskName "Remove-OldScreenshots" -Action $action -Trigger $trigger -Settings $settings
 ```
 
@@ -51,7 +66,7 @@ $action   = New-ScheduledTaskAction -Execute "powershell.exe" `
                 -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`" -DaysToKeep 7"
 $trigger  = New-ScheduledTaskTrigger -Once -At (Get-Date) `
                 -RepetitionInterval (New-TimeSpan -Hours 1)
-$settings = New-ScheduledTaskSettingsSet -Hidden
+$settings = New-ScheduledTaskSettingsSet -Hidden -StartWhenAvailable
 Register-ScheduledTask -TaskName "Remove-OldScreenshots" -Action $action -Trigger $trigger -Settings $settings
 ```
 
